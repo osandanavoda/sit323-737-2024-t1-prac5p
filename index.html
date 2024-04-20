@@ -1,0 +1,98 @@
+<!--SIT323, Task 4.2C, (S223312715), Osanda Navoda Dharmasiri-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Calculator (S223312715)</title>  <!--title-->
+
+</head>
+<body>
+    <h1>Calculator for 4.2C Task</h1>  <!--header--> 
+
+    <form id="cal-form">  <!--Form ID-->
+
+        <label for="numb1">Number 1:</label>    <!--Create label for the first input field-->
+
+        <input type="text" id="numb1" name="numb1" required><br><br>  <!--Create first input-->
+
+
+        <label for="numb2">Number 2:</label>    <!--Create label for the second input field-->
+
+        <input type="text" id="numb2" name="numb2" required><br><br>  <!--Create first input-->
+
+
+        <label for="Arithmetic operation">Arithmetic Operation:</label>  <!---Create label for Arithmetic Operation dropdown menu-->
+
+
+        <select id="a_operations" name="arithmetic operations">   <!--Creating dropdown menu for user to choose Arithmetic Operations-->
+
+
+            <option value="add">Addition (+)</option>
+
+            <option value="subtract">Subtraction (-)</option>
+
+            <option value="multiply">Multiplication (*)</option>
+
+            <option value="divide">Division (/)</option>
+
+            <option value="modulo">Modulo (%)</option>
+
+            <option value="exponentiate">Exponentiation (^)</option>
+
+        </select>
+
+        <br><br>
+
+        
+        <button type="submit">Calculate</button>   <!--Submit Button-->
+
+
+    </form>
+
+
+    <div id="result"></div>  <!--Creates div id name "result"-->
+
+
+    <script>    //Starting JS code
+
+        document.getElementById('cal-form').addEventListener('submit', async function(event) {    //Add eventlistener to ther form with "cal-form", when form is submitted it handle the respone
+
+
+            event.preventDefault();    //this code prevents the default behavior of form submission, which cause the page to reload
+
+            const formData = new FormData(this);  //Creates the FormData object from the submitted form data
+
+            const url = `/${formData.get('arithmetic operations')}?numb1=${formData.get('numb1')}&numb2=${formData.get('numb2')}`;  //Constructs the URL for API request based on the user provided data
+
+            try {
+                const response = await fetch(url); //send fetch request to the constructed URL
+
+                const data = await response.json();  //Read response body as JSON
+
+                if (response.ok) {    //check response 
+
+                    document.getElementById('result').innerText = `Result: ${data.result}`;    //Update and display result based on API response 
+
+                } else {
+
+                    document.getElementById('result').innerText = `Error: ${data.error}`;  //Update and display error message based on API response 
+
+                }
+            } catch (error) {
+
+                console.error('Error:', error);    //Provides error message to console
+
+                document.getElementById('result').innerText = 'An error occurred. Please try again.';   //This code displays this error mesage when an error occurs during the server request
+
+            }
+
+        });
+
+
+
+    </script>
+</body>
+</html>
